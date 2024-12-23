@@ -18,7 +18,7 @@ def draw(event,x,y,flag,params):
     # Check if mouse is moving using cv2.EVENT_MOUSEMOVE 
     elif event == cv2.EVENT_MOUSEMOVE:
         if drawing == True:
-            print(x, ' ', y)
+            
             points_x.append(x)
             points_y.append(y)
             cv2.circle(img,(x,y),3,(0,0,355),-1)

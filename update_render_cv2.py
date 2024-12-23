@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from create_mask import process_image
 
 def get_image(img1, img2, y, x ):
 # Load the base image and overlay image
@@ -42,13 +43,15 @@ def get_image(img1, img2, y, x ):
     return img1
 
 
-def get_updated_render_cv2(img1, img2, x, y, rotation):
+def get_updated_render_cv2(img1, img2, x, y, rotation, scale):
 
     img1 = np.array(img1)
     img1 = cv2.cvtColor(img1, cv2.COLOR_RGB2BGR)
     img2 = np.array(img2)
     img2 = cv2.cvtColor(img2, cv2.COLOR_RGB2BGR)
-    img2= cv2.resize(img2,(100,100))
+    width = int(img2.shape[1] * scale / 100)
+    height = int(img2.shape[0] * scale / 100)
+    img2= cv2.resize(img2,(width, height))
 # Define the position where img2 will be placed on img1
     x_offset, y_offset = x,y
 
@@ -58,12 +61,26 @@ def get_updated_render_cv2(img1, img2, x, y, rotation):
 
 # Create the mask: Non-black pixels in img2 are white (foreground)
     _, mask = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
+   
+   
+    non_zero_indices = np.argwhere(mask > 0)
+      # First row and column where mask > 0 
+    print("First non-zero value found at:", non_zero_indices[0][0])
 
+    print("First non-zero value found at:", non_zero_indices[0])
+    first_non_zero_x = non_zero_indices[0][0]
+    first_non_zero_y = non_zero_indices[0][1]
+    x_bound, y_bound, w_bound, h_bound = cv2.boundingRect(non_zero_indices)
+    print("x_bound:",x_bound)
+    img2 = img2[y_bound:y_bound+h_bound,x_bound:x_bound+w_bound]
+    mask = mask[y_bound:y_bound+h_bound,x_bound:x_bound+w_bound]
 # Invert the mask: Black pixels in img2 become white (background)
+    
     mask_inv = cv2.bitwise_not(mask)
-
+    
 # Extract the region of interest (ROI) from img1 where img2 will be placed
     roi = img1[y_offset:y_offset+img2.shape[0], x_offset:x_offset+img2.shape[1]]
+    
 
 # Use the mask to blend img2 with the ROI
     img1_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)  # Background from img1
@@ -71,18 +88,20 @@ def get_updated_render_cv2(img1, img2, x, y, rotation):
 
 # Combine the background and the foreground
     dst = cv2.add(img1_bg, img2_fg)
-
+    cv2.imshow("dst", dst)
+    
 # Place the combined result back into img1
     img1[y_offset:y_offset+img2.shape[0], x_offset:x_offset+img2.shape[1]] = dst
+    
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
     return img1
 
 
 
-#img1  =cv2.imread("images/background/0.jpg")
-#img2 = cv2.imread("images/objects/obj1/sample1.jpg")
+img1  =cv2.imread("images/background/0.jpg")
+img2 = cv2.imread("images/objects/obj1/sample1.jpg")
+img2 = process_image(img2)
+test = get_updated_render_cv2(img1,img2,10 ,10 , 0, 100)
 
-#test = get_updated_render_cv2(img1,img2,0 ,0 , 0)
-
-#cv2.imshow("check", test)
-#cv2.waitKey(0)
+cv2.imshow("check", test)
+cv2.waitKey(0)

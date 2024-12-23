@@ -95,7 +95,8 @@ class TkinterApp:
         
     def update_render(self):
         self.rotate = 0
-        self.updated_preview = get_updated_render_cv2(self.img_render, self.extract_image, self.locx, self.locy, self.rotate) 
+        self.scale = 100
+        self.updated_preview = get_updated_render_cv2(self.img_render, self.extract_image, self.locx, self.locy, self.rotate, self.scale) 
         print("update preview")
         self.updated_preview = Image.fromarray(self.updated_preview)
         self.img_render = self.updated_preview
