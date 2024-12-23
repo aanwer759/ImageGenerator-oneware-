@@ -58,9 +58,9 @@ class TkinterApp:
         self.new_window.title("Image Viewer")
 
     # Load the image using OpenCV
-        self.cv_imgobj = cv2.imread(self.file_path)
+        #self.cv_imgobj = cv2.imread(self.file_path)
     #cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB for Tkinter
-        self.extract_image = process_image(self.cv_imgobj)
+        self.extract_image = process_image(self.file_path, self.bgimg_path)
         self.extract_image = cv2.cvtColor(self.extract_image, cv2.COLOR_BGR2RGB)
     
     # Convert OpenCV image to PIL Image
@@ -90,6 +90,7 @@ class TkinterApp:
 
     def pick_location(self):
         self.locx , self.locy = pick_location_imp(self.bgimg_path)
+        print(self.locx, self.locy)
         
         
         
@@ -105,6 +106,7 @@ class TkinterApp:
         self.img_label_render = Label(self.window, image=self.img_tk_render)
         self.img_label_render.image = self.img_tk_render  # Keep a reference to avoid garbage collection
         self.img_label_render.pack()
+        self.img_labelobj.destroy()
         self.new_window.destroy()
         
 
