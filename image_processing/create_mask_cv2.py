@@ -1,7 +1,7 @@
 import cv2 
 import numpy as np
 from rembg import remove
-#img = np.zeros((600,600), dtype = np.uint8)
+
 drawing = False
 points_x = []
 points_y = []
@@ -77,7 +77,7 @@ def process_image(img_path, bg_image):
 
 
     mask_poly = np.zeros(img.shape[:2], dtype=np.uint8)
-    #bg_poly = np.zeros(img.shape[:2], dtype=np.uint8)
+    
     points = np.asarray(points)
 
     cv2.fillPoly(mask_poly, [points], 255)

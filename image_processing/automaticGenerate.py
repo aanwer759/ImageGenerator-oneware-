@@ -49,9 +49,7 @@ def gen_image(background_image = "images/background/0.jpg", dir_path="images/obj
     
     img_write_path = "images/render/render.jpg"
     print(img_write_path)
-    #cv2.imwrite(img_write_path, img_render)
-    #cv2.imshow("test obj", img_render)
-    #cv2.waitKey(0)
+    
     img_render = cv2.cvtColor(img_render, cv2.COLOR_BGR2RGB)
     return img_render
 
