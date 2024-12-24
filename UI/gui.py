@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 from image_processing.create_mask_cv2 import process_image
 from image_processing.pick_location_cv2 import pick_location_imp
 from image_processing.update_render_cv2 import get_updated_render_cv2
+from image_processing.automaticGenerate import gen_image
 import tkinter as tk
 import random
 
@@ -46,6 +47,10 @@ class App:
         self.img_label.image = self.img_tk  # Keep a reference to avoid garbage collection
         self.img_label.pack(pady=5)
 
+        # Create a Button widget to Auto Generate Image
+        self.add_image_button = tk.Button(self.window, text="Auto Gen", command=self.autogen)
+        self.add_image_button.pack(pady=5)
+        
         # Create a Button widget to Add Image
         self.add_image_button = tk.Button(self.window, text="Add Image", command=self.add_object)
         self.add_image_button.pack(pady=5)
@@ -64,6 +69,15 @@ class App:
         self.img_label_render.image = self.img_tk_render  # Keep a reference to avoid garbage collection
         self.img_label_render.pack(pady=5)
 
+    def autogen(self):
+        self.img_render = gen_image()
+        print("update preview")
+        self.img_render = Image.fromarray(self.img_render)
+        self.img_tk_render = ImageTk.PhotoImage(self.img_render)
+        self.img_label_render.destroy()
+        self.img_label_render = Label(self.window, image=self.img_tk_render)
+        self.img_label_render.image = self.img_tk_render  # Keep a reference to avoid garbage collection
+        self.img_label_render.pack(pady=5)
     def add_object(self):
         print("add object")
         self.file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg *.png *.jpeg *.bmp")])
@@ -78,7 +92,9 @@ class App:
     # Load the image using OpenCV
         #self.cv_imgobj = cv2.imread(self.file_path)
     #cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB for Tkinter
+        
         self.extract_image = process_image(self.file_path, self.bgimg_path)
+        #self.extract_image = process_image(self.file_path, self.img_render)
         self.extract_image = cv2.cvtColor(self.extract_image, cv2.COLOR_BGR2RGB)
         
     # Convert OpenCV image to PIL Image
@@ -121,6 +137,7 @@ class App:
 
     def pick_location(self):
         self.locx , self.locy = pick_location_imp(self.bgimg_path)
+        #self.locx , self.locy = pick_location_imp(self.img_render)
         print(self.locx, self.locy)
         
         
@@ -154,3 +171,7 @@ class App:
         
         self.window.mainloop()
 
+
+if __name__ == "__main__":
+    app= App()
+    app.run()
