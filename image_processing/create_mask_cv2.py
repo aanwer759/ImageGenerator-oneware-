@@ -21,20 +21,21 @@ def draw(event,x,y,flag,params):
             
             points_x.append(x)
             points_y.append(y)
-            #cv2.circle(img,(x,y),3,(0,0,355),-1)
+            cv2.circle(img,(x,y),1,(255,255,255),-1)
             
     # Checking whether the Left button is up using cv2.EVENT_LBUTTONUP
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
         points_x.append(x)
         points_y.append(y)
-        #cv2.circle(img,(x,y),3,(0,0,255),-1)
+        cv2.circle(img,(x,y),1,(255,255,255,),-1)
   
 
 
 def process_image(img_path, bg_image):
     global points_x
     global points_y
+    global img
     points_x = []
     points_y = []
     # reading the image 
@@ -50,20 +51,20 @@ def process_image(img_path, bg_image):
 
     img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
     # displaying the image 
-    cv2.namedWindow(winname="Image")
+    cv2.namedWindow(winname="Select Region")
   
     # setting mouse handler for the image 
     # and calling the click_event() function 
-    cv2.setMouseCallback('Image', draw) 
+    cv2.setMouseCallback('Select Region', draw) 
     while True:
-        cv2.imshow('Image',img)
+        cv2.imshow('Select Region',img)
         key = cv2.waitKey(1)
         if key == ord('q'):
             break
 
   
     # close the window 
-    cv2.destroyWindow("Image")
+    cv2.destroyWindow("Select Region")
     if len(points_x) == 0:
         return img
     

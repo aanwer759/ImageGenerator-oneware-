@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from create_mask import process_image
 
 def get_image(img1, img2, y, x ):
 # Load the base image and overlay image

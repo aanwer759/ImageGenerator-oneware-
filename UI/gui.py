@@ -4,14 +4,14 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 
-#from image_manipulation import open_image_window
-from create_mask import process_image
-from pick_location_cv2 import pick_location_imp
-from update_render_cv2 import get_updated_render_cv2
+#
+from image_processing.create_mask_cv2 import process_image
+from image_processing.pick_location_cv2 import pick_location_imp
+from image_processing.update_render_cv2 import get_updated_render_cv2
 import tkinter as tk
 import random
 
-class TkinterApp:
+class App:
     def __init__(self, title="Image Generator", width=1024, height=786):
 
         """Initialize the Tkinter application."""
@@ -89,21 +89,21 @@ class TkinterApp:
         self.img_labelobj.image = self.img_tk_obj  # Keep a reference to avoid garbage collection
         self.img_labelobj.pack(pady=10)
         #Rotation lable 
-        self.label_text = tk.StringVar(value="Rotation")
+        self.label_text = tk.StringVar(value="Rotation Angle")
         self.label = tk.Label(self.new_window, textvariable= self.label_text)
         self.label.pack(pady=5)
         #Rotation slider 
         self.current_rot_value= DoubleVar()
-        self.rot_slider = Scale(self.new_window, from_=0, to=100, orient='horizontal', variable=self.current_rot_value, command = self.on_rot_value_change)
+        self.rot_slider = Scale(self.new_window, from_=0, to=360, orient='horizontal', variable=self.current_rot_value, command = self.on_rot_value_change)
         self.rot_slider.pack(pady=5)
         #scale lable 
-        self.label_text = tk.StringVar(value="Scale")
+        self.label_text = tk.StringVar(value="Scale Percentage")
         self.label = tk.Label(self.new_window, textvariable= self.label_text)
         self.label.pack(pady=10)
         ## scale Slider 
         self.current_scale_value = DoubleVar()
         self.current_scale_value.set(100)
-        self.scale_slider = Scale(self.new_window, from_=0, to=100, orient='horizontal', variable=self.current_scale_value, command = self.on_scale_value_change)
+        self.scale_slider = Scale(self.new_window, from_=0, to=250, orient='horizontal', variable=self.current_scale_value, command = self.on_scale_value_change)
         self.scale_slider.pack(pady=10)
         #pick location button 
         pick_location_button = Button(self.new_window, text = "Pick Location", command = self.pick_location)
@@ -154,8 +154,3 @@ class TkinterApp:
         
         self.window.mainloop()
 
-# Example usage
-if __name__ == "__main__":
-    # Create and run the Tkinter app
-    app = TkinterApp()
-    app.run()
