@@ -7,7 +7,7 @@ from image_processing.update_render_cv2 import get_updated_render_cv2
 
 
 
-def gen_image(background_image, dir_path, remove_bg= False):
+def gen_image(background_image = "images/background/0.jpg", dir_path="images/objects/", remove_bg= True):
     print("Generate Images Automatically")
     img_render = cv2.imread(background_image)
     dir_list = os.listdir(dir_path)
@@ -49,8 +49,10 @@ def gen_image(background_image, dir_path, remove_bg= False):
     
     img_write_path = "images/render/render.jpg"
     print(img_write_path)
-    cv2.imwrite(img_write_path, img_render)
-    cv2.imshow("test obj", img_render)
-    cv2.waitKey(0)
+    #cv2.imwrite(img_write_path, img_render)
+    #cv2.imshow("test obj", img_render)
+    #cv2.waitKey(0)
+    img_render = cv2.cvtColor(img_render, cv2.COLOR_BGR2RGB)
+    return img_render
 
 

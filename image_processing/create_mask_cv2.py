@@ -1,6 +1,6 @@
 import cv2 
 import numpy as np
-
+from rembg import remove
 #img = np.zeros((600,600), dtype = np.uint8)
 drawing = False
 points_x = []
@@ -41,16 +41,17 @@ def process_image(img_path, bg_image):
     # reading the image 
     scale_percent = 100
     img = cv2.imread(img_path)
-    img_bg = cv2.imread(bg_image)
+    img_bg = cv2.imread(bg_image) 
     bgh, bgw, _ =img_bg.shape
     imgh, imgw, _ = img.shape
-    if (imgh>bgh) or (imgw > bgh): 
+    if (imgh>bgh) or (imgw > bgw): 
         scale_percent = 25
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
 
     img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
-    # displaying the image 
+    img = remove(img)
+    # creating image window  
     cv2.namedWindow(winname="Select Region")
   
     # setting mouse handler for the image 

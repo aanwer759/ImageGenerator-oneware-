@@ -15,6 +15,10 @@ def pick(event,x,y,flag, param):
           selected = True 
 
 def pick_location_imp(img_path):
+    global point_x, point_y, selected
+    point_y = 0
+    point_x = 0
+    selected = 0
     # reading the image 
     img = cv2.imread(img_path) 
     cv2.namedWindow(winname="Select Position to Place Image")
