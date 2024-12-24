@@ -43,15 +43,29 @@ def get_image(img1, img2, y, x ):
     return img1
 
 
+def rotate_image(image, angle):
+  image_center = tuple(np.array(image.shape[1::-1]) / 2)
+  rot_mat = cv2.getRotationMatrix2D(image_center, angle, 1.0)
+  result = cv2.warpAffine(image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR)
+  return result
+
+
 def get_updated_render_cv2(img1, img2, x_offset, y_offset, rotation, scale):
 
     img1 = np.array(img1)
     img1 = cv2.cvtColor(img1, cv2.COLOR_RGB2BGR)
     img2 = np.array(img2)
+
+    scale = int(scale)
+    rotation = int(rotation)
+    
     img2 = cv2.cvtColor(img2, cv2.COLOR_RGB2BGR)
     width = int(img2.shape[1] * scale / 100)
     height = int(img2.shape[0] * scale / 100)
     img2= cv2.resize(img2,(width, height))
+
+    img2 = rotate_image(img2, (rotation))
+    
 
 # Create a mask for img2 by identifying black pixels
 # Convert to grayscale
