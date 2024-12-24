@@ -89,9 +89,6 @@ class App:
         self.new_window.title("Image Viewer")
         self.new_window.geometry("512x512")
 
-    # Load the image using OpenCV
-        #self.cv_imgobj = cv2.imread(self.file_path)
-    #cv_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB for Tkinter
         
         self.extract_image = process_image(self.file_path, self.bgimg_path)
         #self.extract_image = process_image(self.file_path, self.img_render)
@@ -137,7 +134,6 @@ class App:
 
     def pick_location(self):
         self.locx , self.locy = pick_location_imp(self.bgimg_path)
-        #self.locx , self.locy = pick_location_imp(self.img_render)
         print(self.locx, self.locy)
         
         
