@@ -1,0 +1,29 @@
+A simple Image Generator Tool to create images for testing purposes 
+Following are features to create Image(s)
+
+Auto Gen Feature: 
+Auto Gen feature can be used to automatically generate images. 
+Following are some requirements to use this feature
+1- base image should be in following location (relative to root dir)
+images/background/0.jpg
+note: background image is expected to be named 0.jpg.
+
+2 -  objects should be in separate directories should follow structure specified in images dir 
+object images are expected to be called 0.jpg
+
+this can be done by clicking Auto Gen button in UI
+
+
+Manual Image Generation feature :
+Images can be generated manually and can be configured by selecting scale, rotation and position to place. 
+
+1 - click on add image, it will give background removed image. Further background or part of image can be removed by DRAWING AROUND OBJECT THAT NEEDS TO BE KEPT AS PART OF IMAGE
+2- press 'q' key when image area is selected. It is not mandatory to draw on image and auto background removed image can be used as it is. 
+3 - select rotate and scale options by dragging slider 
+4- pick location by clicking on pick location button . If no position is selected, random generated positions will be used . press 'q' key after selecting
+5- click on add .
+
+This will show preview of modified image. 
+
+When done generating, click on save image and choose location. 
+
