@@ -1,0 +1,12 @@
+when pick location is not clicked, we get error about not defined --> done (radom location is added as well)
+
+Add scale factor --> done 
+
+check if rotation is taking place --> done
+
+save image function 
+
+UI improvements 
+
+
+

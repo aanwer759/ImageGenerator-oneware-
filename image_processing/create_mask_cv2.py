@@ -1,7 +1,7 @@
 import cv2 
 import numpy as np
-
-img = np.zeros((600,600), dtype = np.uint8)
+from rembg import remove
+#img = np.zeros((600,600), dtype = np.uint8)
 drawing = False
 points_x = []
 points_y = []
@@ -18,43 +18,57 @@ def draw(event,x,y,flag,params):
     # Check if mouse is moving using cv2.EVENT_MOUSEMOVE 
     elif event == cv2.EVENT_MOUSEMOVE:
         if drawing == True:
-            print(x, ' ', y)
+            
             points_x.append(x)
             points_y.append(y)
-            cv2.circle(img,(x,y),3,(0,0,355),-1)
+            cv2.circle(img,(x,y),1,(255,255,255),-1)
             
     # Checking whether the Left button is up using cv2.EVENT_LBUTTONUP
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
         points_x.append(x)
         points_y.append(y)
-        cv2.circle(img,(x,y),3,(0,0,255),-1)
+        cv2.circle(img,(x,y),1,(255,255,255,),-1)
   
-# driver function 
 
-def process_image(img):
+
+def process_image(img_path, bg_image):
+    global points_x
+    global points_y
+    global img
+    points_x = []
+    points_y = []
     # reading the image 
     scale_percent = 100
-
+    img = cv2.imread(img_path)
+    img_bg = cv2.imread(bg_image) 
+    bgh, bgw, _ =img_bg.shape
+    imgh, imgw, _ = img.shape
+    if (imgh>bgh) or (imgw > bgw): 
+        scale_percent = 25
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
 
     img = cv2.resize(img, (width, height), interpolation = cv2.INTER_AREA)
-    # displaying the image 
-    cv2.namedWindow(winname="Image")
+    img = remove(img)
+    # creating image window  
+    cv2.namedWindow(winname="Select Region")
   
     # setting mouse handler for the image 
     # and calling the click_event() function 
-    cv2.setMouseCallback('Image', draw) 
+    cv2.setMouseCallback('Select Region', draw) 
     while True:
-        cv2.imshow('Image',img)
+        cv2.imshow('Select Region',img)
         key = cv2.waitKey(1)
         if key == ord('q'):
             break
 
   
     # close the window 
-    cv2.destroyWindow("Image")
+    cv2.destroyWindow("Select Region")
+    if len(points_x) == 0:
+        return img
+    
     points = []
     for i in range (len(points_x)):
         temp = [points_x[i], points_y[i]]
@@ -63,7 +77,7 @@ def process_image(img):
 
 
     mask_poly = np.zeros(img.shape[:2], dtype=np.uint8)
-    bg_poly = np.zeros(img.shape[:2], dtype=np.uint8)
+    #bg_poly = np.zeros(img.shape[:2], dtype=np.uint8)
     points = np.asarray(points)
 
     cv2.fillPoly(mask_poly, [points], 255)
